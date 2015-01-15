@@ -5,9 +5,10 @@ Provides MVC handler for [FlowJs](https://github.com/flowjs) uploads
 
 Installation:
 -------------
-
 Just add .cs files from folders "Models" and "Repository" to your project.
 
+Examples:
+-------------
 The `FileController.cs`, `Upload.cshtml`, and `Upload.js` files are provided as examples.
 
 The code in the client side examples uses AngularJs and the following directives:
