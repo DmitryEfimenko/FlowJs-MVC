@@ -1,0 +1,33 @@
+<form name="formUpload" server-validate novalidate>
+    <div class="col-xs-12 drop-target"
+         flow-init="{ target: '/api/File/Upload', headers: getSecurityHeaders(), singleFile: true }"
+         flow-file-added="validateFile($file)"
+         flow-file-progress="fileUploadProgress($file.progress())"
+         flow-files-submitted="$flow.upload()"
+         flow-file-success="fileUploadSuccess($message)"
+         flow-error="uploadError($message)">
+        
+        <div class="alert"
+             flow-btn
+             flow-drop
+             flow-drag-enter="class='alert-info over'"
+             flow-drag-leave="class='alert-success'"
+             flow-attrs="{accept: 'image/*'}"
+             ng-class="class || 'alert-success'">
+            <span class="glyphicon glyphicon-upload"></span> Drag and drop your image here or click to upload.
+
+            <div class="pull-right">
+                <span class="glyphicon glyphicon-ok pull-right" ng-show="fileProgress == 100"></span>
+            </div>
+
+            <progressbar value="fileProgress" ng-show="fileProgress && fileProgress < 100 && formUpload.$valid && !formUpload.$serverErrors" class="progress-striped active" type="success">{{fileProgress}}%</progressbar>
+
+            <span ng-messages for="formUpload.$serverErrors.file">
+                <span ng-message when="server_size" class="help-block error">The file is too big</span>
+                <span ng-message when="server_type" class="help-block error">This file type is not supported</span>
+                <span ng-message when="server_amount" class="help-block error">Maximum amount of pictures reached</span>
+                <span ng-message when="server_damaged" class="help-block error">The file appears to be damaged</span>
+            </span>
+        </div>
+    </div>
+</form>
