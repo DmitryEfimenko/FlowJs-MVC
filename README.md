@@ -1,7 +1,7 @@
 FlowJs-MVC
 ==================
 
-Provides MVC handler for FlowJs uploads
+Provides MVC handler for [FlowJs](https://github.com/flowjs) uploads
 
 Installation:
 -------------
