@@ -8,7 +8,7 @@ using FlowJs;
 using FlowJs.Interface;
 using Microsoft.AspNet.Identity;
 
-namespace PetSitterSpot.Controllers
+namespace MyProject.Controllers
 {
     [Authorize]
     [RoutePrefix("api/File")]
