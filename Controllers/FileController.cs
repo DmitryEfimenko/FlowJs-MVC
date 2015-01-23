@@ -46,25 +46,33 @@ namespace MyProject.Controllers
             validationRules.AcceptedExtensions.AddRange(new List<string> { "jpeg", "jpg", "png", "bmp" });
             validationRules.MaxFileSize = 5000000;
 
-            var status = _flowJs.PostChunk(request, Folder, validationRules);
-
-            if (status.Status == PostChunkStatus.Done)
+            try
             {
-                // file uploade is complete. Below is an example of further file handling
-                var filePath = Path.Combine(Folder, status.FileName);
-                var file = File.ReadAllBytes(filePath);
-                var picture = await _fileManager.UploadPictureToS3(User.Identity.GetUserId(), file, status.FileName);
-                File.Delete(filePath);
-                return Ok(picture);
+                var status = _flowJs.PostChunk(request, Folder, validationRules);
+    
+                if (status.Status == PostChunkStatus.Done)
+                {
+                    // file uploade is complete. Below is an example of further file handling
+                    var filePath = Path.Combine(Folder, status.FileName);
+                    var file = File.ReadAllBytes(filePath);
+                    var picture = await _fileManager.UploadPictureToS3(User.Identity.GetUserId(), file, status.FileName);
+                    File.Delete(filePath);
+                    return Ok(picture);
+                }
+    
+                if (status.Status == PostChunkStatus.PartlyDone)
+                {
+                    return Ok();
+                }
+    
+                status.ErrorMessages.ForEach(x => ModelState.AddModelError("file", x));
+                return BadRequest(ModelState);
             }
-
-            if (status.Status == PostChunkStatus.PartlyDone)
+            catch (Exception)
             {
-                return Ok();
+                ModelState.AddModelError("file", "exception");
+                return BadRequest(ModelState);
             }
-
-            status.ErrorMessages.ForEach(x => ModelState.AddModelError("file", x));
-            return BadRequest(ModelState);
         }
     }
 }
