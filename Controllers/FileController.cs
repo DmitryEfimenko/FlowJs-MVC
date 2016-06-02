@@ -33,7 +33,7 @@ namespace MyProject.Controllers
 
             var chunkExists = _flowJs.ChunkExists(Folder, request);
             if (chunkExists) return Ok();
-            return NotFound();
+            return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NoContent));
         }
 
         [HttpPost]
